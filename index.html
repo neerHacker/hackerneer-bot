@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Bot Messenger</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e9f0ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 15px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+    }
+    h2 {
+      color: #4b47e0;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4b47e0;
+      color: #fff;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    button:hover {
+      background: #3a36c9;
+    }
+    .links {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .links a {
+      flex: 1;
+      text-decoration: none;
+      background: #ff0000;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+    }
+    .links a.telegram {
+      background: #0088cc;
+    }
+    .credit {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Telegram Bot Messenger</h2>
+    <input type="text" id="token" placeholder="Enter Bot Token">
+    <input type="text" id="chatid" placeholder="Enter Chat IDs (comma separated)">
+    <textarea id="message" rows="4" placeholder="Enter your message"></textarea>
+    <button onclick="sendMessage()">Send Message</button>
+
+    <!-- Telegram & YouTube Buttons -->
+    <div class="links">
+      <a href="https://t.me/Hackerneerr" target="_blank" class="telegram">Join Telegram</a>
+      <a href="https://youtube.com/@neeraj-d1j?si=X9VDocpDFpsC_0kz" target="_blank">Subscribe YouTube</a>
+    </div>
+
+    <div class="credit">⚡ Credit: <b>Hacker Neer</b></div>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      let token = document.getElementById("token").value.trim();
+      let chatIds = document.getElementById("chatid").value.trim().split(",");
+      let message = document.getElementById("message").value.trim();
+
+      if (!token || !chatIds || !message) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      for (let chatId of chatIds) {
+        let url = `https://api.telegram.org/bot${token}/sendMessage`;
+        let data = {
+          chat_id: chatId.trim(),
+          text: message
+        };
+
+        try {
+          let response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            console.log(`Message sent to ${chatId}`);
+          } else {
+            console.error(`Failed for ${chatId}`);
+          }
+        } catch (err) {
+          console.error("Error:", err);
+        }
+      }
+
+      alert("Message sent!");
+    }
+  </script>
+</body>
+</html>
